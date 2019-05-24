@@ -1,21 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <script
+      src="https://unpkg.com/react@16/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Star Wars React</title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root" class="container" />
     <script type="text/babel">
-    const root=document.querySelector("#root");
+    const root = document.querySelector('#root');
+    const domain = "https://swapi.co/api/people/?page=1";
+
+    class Main extends React.Component {
+constructor() {
+    super();
+    this.state = {
+      people: []
+    //   selectedContact: {}
+    };
+    // this.selectContact = this.selectContact.bind(this);
+  }
+  async componentDidMount() {
+    try {
+      const res = await axios.get(`${domain}`);
+      const people = res.data;
+      console.log(people);
+      
+      this.setState({ people });
+    } catch (err) {
+      console.error("There was a problem fetching people:", err);
+    }
+  }
+        render() {
+            return (
+    //     {({this.state.people}).map(peep => (
+    //       <tr>
+    //   <td>{name}</td>
+    //   <td>{height}</td>
+    //   <td>{hair}</td>
+    // </tr>
+    //     ))}
     
+// {people.map(peep => (
+//           <tr>
+//       <td>{peep.name}</td>
+//       <td>{peep.height}</td>
+//       <td>{peep.hair}</td>
+//     </tr>
+//         ))}         
+
+      <p>yo</p>
+            );
+        }
+    }
+    ReactDOM.render(
+        <Main />,
+        document.getElementById('root')
+    );
     </script>
-    </div>
-</body>
+  </body>
 </html>
