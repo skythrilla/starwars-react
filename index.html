@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <script
@@ -10,69 +9,189 @@
       src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
       crossorigin
     ></script>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+      img {
+        max-width: 13%;
+        max-height: 13%;
+      }
+      body {
+        background-image: url("https://vignette.wikia.nocookie.net/starwars/images/9/9d/DSI_hdapproach.png/revision/latest?cb=20130221005853");
+      }
+      #other {
+        padding: 10%;
+      }
+      h1,
+      h2 {
+        color: white;
+      }
+      #content {
+        display: flex;
+        align-items: left;
+        justify-content: left;
+      }
+      #traits {
+        font-weight: bold;
+      }
+      li {
+        list-style: none;
+        color: dodgerblue;
+        font-size: 1.2em;
+        border: solid 1px lightgray;
+        padding: 5px;
+        background-color: black;
+      }
+      a:hover,
+      #liurl:hover,
+      #namelist:hover,
+      #namelistli:hover {
+        background-color: dodgerblue;
+        color: white;
+      }
+      a {
+        color: dodgerblue;
+        background-color: black;
+        font-size: 1.2em;
+      }
+      #namelist {
+        text-decoration: none;
+        border: none;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Star Wars React</title>
   </head>
   <body>
-    <div id="root" class="container" />
+    <div id="root"></div>
     <script type="text/babel">
-    const root = document.querySelector('#root');
-    const domain = "https://swapi.co/api/people/?page=1";
-
-    class Main extends React.Component {
-constructor() {
-    super();
-    this.state = {
-      people: []
-    //   selectedContact: {}
-    };
-    // this.selectContact = this.selectContact.bind(this);
-  }
-  async componentDidMount() {
-    try {
-      const res = await axios.get(`${domain}`);
-      const people = res.data;
-      console.log(people);
-      
-      this.setState({ people });
-    } catch (err) {
-      console.error("There was a problem fetching people:", err);
-    }
-  }
-        render() {
-            return (
-    //     {({this.state.people}).map(peep => (
-    //       <tr>
-    //   <td>{name}</td>
-    //   <td>{height}</td>
-    //   <td>{hair}</td>
-    // </tr>
-    //     ))}
-    
-// {people.map(peep => (
-//           <tr>
-//       <td>{peep.name}</td>
-//       <td>{peep.height}</td>
-//       <td>{peep.hair}</td>
-//     </tr>
-//         ))}         
-
-      <p>yo</p>
-            );
+      const domain = "https://swapi.co/api/people/";
+      const List = ({ people }) => {
+        return (
+          <div id="content">
+            <ul>
+              {people.map(person => {
+                return (
+                  <a id="namelist" key={person.id} href={`#${person.id}`}>
+                    <li id="namelistli" key={person.id}>
+                      {person.name}
+                    </li>
+                  </a>
+                );
+              })}
+            </ul>
+          </div>
+        );
+      };
+      const Detail = ({ person, select }) => {
+        const data = [],
+          dataInfo = [];
+        for (let key in person) {
+          if (key === "name") {
+            data.push(key);
+            dataInfo.push(person[key]);
+          }
+          if (key === "height") {
+            data[2] = key;
+            dataInfo[2] = person[key];
+          }
+          if (key === "hair_color") {
+            data[1] = key;
+            dataInfo[1] = person[key];
+          }
+          if (
+            key === "eye_color" ||
+            key === "birth_year" ||
+            key === "homeworld"
+          ) {
+            data.push(key);
+            dataInfo.push(person[key]);
+          }
         }
-    }
-    ReactDOM.render(
-        <Main />,
-        document.getElementById('root')
-    );
+        return (
+          <div>
+            <br />
+            <a href="#">
+              <img src="data:image/jpeg;base64,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" />
+              Hide Details
+            </a>
+            <h2>Details for {`${person.name}`}</h2>
+            <div id="content">
+              <ul>
+                {data.map((value, index) => {
+                  return (
+                    <li id="traits" key={index}>
+                      {value}
+                    </li>
+                  );
+                })}
+              </ul>
+              <ul>
+                {dataInfo.map((value, index) => {
+                  if (value[5] === ":")
+                    return (
+                      <a href={value} key={index}>
+                        <li id="liurl" key={index}>
+                          {value}
+                        </li>
+                      </a>
+                    );
+                  return <li key={index}>{value}</li>;
+                })}
+              </ul>
+            </div>
+          </div>
+        );
+      };
+      class App extends React.Component {
+        constructor() {
+          super();
+          this.state = {
+            people: [],
+            id: null
+          };
+        }
+        async componentDidMount() {
+          window.addEventListener("hashchange", () => {
+            const id = window.location.hash.slice(1) * 1;
+            this.setState({ id });
+          });
+          if (window.location.hash.length > 1) {
+            const id = window.location.hash.slice(1) * 1;
+            this.setState({ id });
+          }
+          try {
+            const res = await axios.get(`${domain}`);
+            const starwars = res.data;
+            const people = [];
+            for (let i = 0; i < starwars.results.length; i++) {
+              people[i] = starwars.results[i];
+              people[i].id = i + 1;
+            }
+            this.setState({ people });
+          } catch (err) {
+            console.error("There was a problem fetching people:", err);
+          }
+        }
+        render() {
+          const { people, id } = this.state;
+          const { doSomething } = this;
+          const person = people.find(person => person.id === id);
+          return (
+            <div>
+              <h1>Star Wars - React Style</h1>
+              <div id="content">
+                <List people={people} />
+                <div id="other" />
+                {person ? <Detail person={person} /> : null}
+              </div>
+            </div>
+          );
+        }
+      }
+      const root = document.querySelector("#root");
+      ReactDOM.render(<App />, root);
     </script>
   </body>
 </html>
